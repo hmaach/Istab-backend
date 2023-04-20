@@ -11,21 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('evenements', function (Blueprint $table) {
+        Schema::create('interets', function (Blueprint $table) {
             $table->id();
+            $table->string('libelle');
             $table->unsignedBigInteger('id_user');
             $table->foreign('id_user')
                 ->references('id')
                 ->on('users')
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
-            $table->string('description');
-            $table->string('titre');
-            $table->string('coleur');
-            $table->string('type')->nullable();
-            $table->string('audience')->default('tous');
-            $table->dateTime('dateDeb');
-            $table->dateTime('dateFin');
             $table->timestamps();
         });
     }
@@ -35,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('evenements');
+        Schema::dropIfExists('interets');
     }
 };

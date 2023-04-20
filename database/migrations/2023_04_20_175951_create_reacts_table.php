@@ -11,21 +11,21 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('profile__photos', function (Blueprint $table) {
-            $table->unsignedBigInteger('id_photo');
+        Schema::create('reacts', function (Blueprint $table) {
+            $table->primary(['id_poste','id_user']);
             $table->unsignedBigInteger('id_user');
-            $table->primary(['id_user','id_photo']);
+            $table->unsignedBigInteger('id_poste');
+            $table->timestamps();
+            $table->foreign('id_poste')
+                ->references('id')
+                ->on('postes')
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
             $table->foreign('id_user')
                 ->references('id')
                 ->on('users')
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
-            $table->foreign('id_photo')
-                ->references('id')
-                ->on('photos')
-                ->onUpdate('cascade')
-                ->onDelete('cascade');
-            $table->timestamps();
         });
     }
 
@@ -34,6 +34,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('profile__photos');
+        Schema::dropIfExists('reacts');
     }
 };

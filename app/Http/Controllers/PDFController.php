@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Profile_Photo;
+use App\Models\PDF;
 use Illuminate\Http\Request;
 
-class ProfilePhotoController extends Controller
+class PDFController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -34,7 +34,7 @@ class ProfilePhotoController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Profile_Photo $profile_Photo)
+    public function show(PDF $pDF)
     {
         //
     }
@@ -42,7 +42,7 @@ class ProfilePhotoController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Profile_Photo $profile_Photo)
+    public function edit(PDF $pDF)
     {
         //
     }
@@ -50,7 +50,7 @@ class ProfilePhotoController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Profile_Photo $profile_Photo)
+    public function update(Request $request, PDF $pDF)
     {
         //
     }
@@ -58,7 +58,7 @@ class ProfilePhotoController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Profile_Photo $profile_Photo)
+    public function destroy(PDF $pDF)
     {
         //
     }

@@ -19,13 +19,12 @@ return new class extends Migration
             $table->string('sex');
             $table->string('role');
             $table->string('statut')->nullable();
-            $table->unsignedBigInteger('id_groupe');
+            $table->unsignedBigInteger('id_groupe')->nullable();
             $table->foreign('id_groupe')
                 ->references('id')
                 ->on('groupes')
                 ->onUpdate('cascade')
-                ->onDelete('cascade')
-                ->nullable();
+                ->onDelete('cascade');
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
