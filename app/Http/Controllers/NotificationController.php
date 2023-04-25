@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\NotificationEven;
+use App\Models\Notification;
 use Illuminate\Http\Request;
 
-class NotificationEvenController extends Controller
+class NotificationController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -34,7 +34,7 @@ class NotificationEvenController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(NotificationEven $notificationEven)
+    public function show(Notification $notification)
     {
         //
     }
@@ -42,7 +42,7 @@ class NotificationEvenController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(NotificationEven $notificationEven)
+    public function edit(Notification $notification)
     {
         //
     }
@@ -50,7 +50,7 @@ class NotificationEvenController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, NotificationEven $notificationEven)
+    public function update(Request $request, Notification $notification)
     {
         //
     }
@@ -58,7 +58,7 @@ class NotificationEvenController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(NotificationEven $notificationEven)
+    public function destroy(Notification $notification)
     {
         //
     }

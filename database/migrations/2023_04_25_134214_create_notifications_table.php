@@ -11,13 +11,19 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('notification_pos', function (Blueprint $table) {
+        Schema::create('notifications', function (Blueprint $table) {
             $table->id();
-            $table->string("libelle")->nullable();
-            $table->unsignedBigInteger('id_poste');
+            $table->dateTime("dateNotif");
+            $table->unsignedBigInteger('id_poste')->nullable();
+            $table->unsignedBigInteger('id_evenement')->nullable();
             $table->foreign('id_poste')
                 ->references('id')
                 ->on('postes')
+                ->onUpdate('cascade')
+                ->onUpdate('cascade');
+            $table->foreign('id_evenement')
+                ->references('id')
+                ->on('evenements')
                 ->onUpdate('cascade')
                 ->onUpdate('cascade');
             $table->timestamps();
@@ -29,6 +35,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('notification_pos');
+        Schema::dropIfExists('notifications');
     }
 };
