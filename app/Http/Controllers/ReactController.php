@@ -10,9 +10,14 @@ class ReactController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index( Request $request)
     {
-        //
+        $react = new React();
+        $react->id_user = $request->input('user_id');
+        $react->id_poste = $request->input('id_poste');
+        $react->save();
+        return redirect()->back();
+//        dd($request->input('user_id'));
     }
 
     /**
@@ -28,7 +33,9 @@ class ReactController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $react = new React();
+        return 'hhhh';
+
     }
 
     /**

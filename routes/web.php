@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use \App\Http\Controllers\AccueilController;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,6 +14,14 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [\App\Http\Controllers\AccueilController::class,'index']);
+Route::post('/',[\App\Http\Controllers\PosteController::class,'store'])->name('poster');
+Route::get('/update',[\App\Http\Controllers\PosteController::class,'edit']);
+Route::post('/update',[\App\Http\Controllers\PosteController::class,'update'])->name('updatePoste');
+Route::get('/delete',[\App\Http\Controllers\PosteController::class,'destroy'])->name('deletePoste');
+Route::get('/f',[\App\Http\Controllers\ReactController::class,'index'])->name('reacter');
+
+//Route::get('/f',[\App\Http\Controllers\ReactController::class,'store']);
+//Route::get('/rechercher',[\App\Http\Controllers\AccueilController::class,'rechercher'])->name('rechercher');
+
+Route::get('/search', [\App\Http\Controllers\SearchController::class, 'globalSearch'])->name('rechercher');

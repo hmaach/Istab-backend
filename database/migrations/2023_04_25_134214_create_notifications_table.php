@@ -20,12 +20,12 @@ return new class extends Migration
                 ->references('id')
                 ->on('postes')
                 ->onUpdate('cascade')
-                ->onUpdate('cascade');
+                ->onDelete('cascade');
             $table->foreign('id_evenement')
                 ->references('id')
                 ->on('evenements')
                 ->onUpdate('cascade')
-                ->onUpdate('cascade');
+                ->onDelete('cascade');
             $table->timestamps();
         });
     }

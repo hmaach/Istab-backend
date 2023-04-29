@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('postes', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('id_user');
-            $table->string('labelle')->nullable();
+            $table->string('libelle')->nullable();
             $table->string('type');
             $table->string('audience');
             $table->timestamps();

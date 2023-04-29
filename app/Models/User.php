@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Laravel\Scout\Searchable;
 
 class User extends Authenticatable
 {
@@ -41,4 +42,32 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function search($query)
+    {
+        $users = $this->where('name', 'like', "%$query%")
+            ->orWhere('email', 'like', "%$query%")
+            ->get();
+
+        foreach ($users as $user) {
+            $postes = $user->postes()->where('title', 'like', "%$query%")->get();
+            $evenements = $user->evenements()->where('title', 'like', "%$query%")->get();
+        }
+    dd($users);
+        //return [$users, $postes, $evenements];
+    }
+
+    public function postes()
+    {
+        return $this->hasMany(Poste::class);
+    }
+
+    public function evenements()
+    {
+        return $this->hasMany(Evenement::class);
+    }
+    public function cv()
+    {
+        return $this->hasOne(CV::class);
+    }
 }
