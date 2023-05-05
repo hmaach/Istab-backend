@@ -19,9 +19,14 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
         'email',
         'password',
+        'nom',
+        'prenom',
+        'email',
+        'tel',
+        'sex',
+        'role',
     ];
 
     /**
@@ -53,7 +58,7 @@ class User extends Authenticatable
             $postes = $user->postes()->where('title', 'like', "%$query%")->get();
             $evenements = $user->evenements()->where('title', 'like', "%$query%")->get();
         }
-    dd($users);
+        dd($users);
         //return [$users, $postes, $evenements];
     }
 
@@ -66,6 +71,7 @@ class User extends Authenticatable
     {
         return $this->hasMany(Evenement::class);
     }
+
     public function cv()
     {
         return $this->hasOne(CV::class);
