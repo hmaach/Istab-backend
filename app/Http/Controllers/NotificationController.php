@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Notification;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class NotificationController extends Controller
 {
@@ -12,7 +13,29 @@ class NotificationController extends Controller
      */
     public function index()
     {
-        //
+        $notifs = DB::table('notifications')
+            ->leftJoin('postes', 'postes.id', '=', 'notifications.id_poste')
+            ->leftJoin('evenements', 'evenements.id', '=', 'notifications.id_evenement')
+            ->join('users', 'users.id', '=', 'postes.id_user')
+            ->select(
+                'notifications.id as id',
+                'users.id as user_id',
+                'evenements.titre as event',
+                'postes.libelle as poste',
+                'users.nom',
+                'users.prenom',
+                'notifications.dateNotif',
+            )
+            ->groupBy('notifications.id')
+            ->orderBy('dateNotif', 'desc')
+            ->limit(3)
+            ->get();
+
+        return response([
+            'notifs' => $notifs
+        ]);
+
+
     }
 
     /**

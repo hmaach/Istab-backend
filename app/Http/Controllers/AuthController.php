@@ -13,7 +13,10 @@ class AuthController extends Controller
 {
     public function user()
     {
-        return Auth::user();
+         $user = Auth::user();
+         return response([
+             'user'=>$user
+         ]);
     }
 
     public function register(Request $request)
@@ -29,6 +32,30 @@ class AuthController extends Controller
         ]);
     }
 
+//    public function login(Request $request)
+//    {
+//        if (!Auth::attempt($request->only('email', 'password'))) {
+//            return response([
+//                'message' => 'invalid login'
+//            ], Response::HTTP_UNAUTHORIZED);
+//        }
+//        $credentials = $request->validate([
+//            'email' => 'required',
+//            'password' => 'required',
+//        ]);
+//
+//        $user = Auth::user();
+//        $token = $user->createToken('token')->plainTextToken;
+//        $cookie = cookie('jwt', $token, 60 * 24);
+////        return response([
+////            "message" => "Success"
+////        ])->withCookie($cookie);
+//        return response([
+//            'user' => $user,
+//            'token' => $token,
+//        ])->withCookie($cookie);
+//    }
+
     public function login(Request $request)
     {
         if (!Auth::attempt($request->only('email', 'password'))) {
@@ -36,14 +63,21 @@ class AuthController extends Controller
                 'message' => 'invalid login'
             ], Response::HTTP_UNAUTHORIZED);
         }
+        $credentials = $request->validate([
+            'email' => 'required',
+            'password' => 'required',
+        ]);
 
         $user = Auth::user();
         $token = $user->createToken('token')->plainTextToken;
         $cookie = cookie('jwt', $token, 60 * 24);
+
         return response([
-            "message" => "Success"
+            'user' => $user,
+            'token' => $token,
         ])->withCookie($cookie);
     }
+
 
     public function logout(){
 

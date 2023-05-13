@@ -17,7 +17,7 @@ return new class extends Migration
         AFTER INSERT ON `postes`
         FOR EACH ROW
                 BEGIN
-                   INSERT INTO `notifications` (`id_poste`,`dateNotif`) VALUES (NEW.id,CURTIME());
+                   INSERT INTO `notifications` (`id_poste`,`dateNotif`,`lib`) VALUES (NEW.id,CURTIME(),``);
                 END
         ');
     }
