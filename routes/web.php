@@ -25,3 +25,4 @@ Route::get('/f',[\App\Http\Controllers\ReactController::class,'index'])->name('r
 //Route::get('/rechercher',[\App\Http\Controllers\AccueilController::class,'rechercher'])->name('rechercher');
 
 Route::get('/search', [\App\Http\Controllers\SearchController::class, 'globalSearch'])->name('rechercher');
+Route::get('/a', [\App\Http\Controllers\AuthController::class, 'createUser']);

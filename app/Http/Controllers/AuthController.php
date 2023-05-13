@@ -32,6 +32,21 @@ class AuthController extends Controller
         ]);
     }
 
+
+    public function createUser()
+    {
+        User::create([
+            'nom' => 'maach',
+            'prenom' => 'Issam',
+            'email' => 'a@a.com',
+            'tel' => '5672892',
+            'sex' => 'M',
+            'role' => 'admin',
+            'password' => Hash::make('aaaa')
+        ]);
+        return 'You just created a user with : \r\n email : a@a.com \r\n password : aaaa';
+    }
+
 //    public function login(Request $request)
 //    {
 //        if (!Auth::attempt($request->only('email', 'password'))) {
