@@ -21,7 +21,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('/poste/{postId}/like', 'likePost');
     });
 });
-
+Route::get('/search', [SearchController::class, 'globalSearch']);
 Route::get('/edit', [PosteController::class, 'edit']);
 Route::resource('postespublic', PosteController::class);
 Route::resource('notifs', NotificationController::class);

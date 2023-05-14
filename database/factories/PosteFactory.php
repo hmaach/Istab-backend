@@ -20,7 +20,11 @@ class PosteFactory extends Factory
     {
         $type = fake()->randomElement(['announce', 'cour','exercice','note']);
         $audience = fake()->randomElement(['tous', 'filiere','groupe']);
-        $id_user = fake()->numberBetween(1,10);
+        $id_user = function() {
+            return User::whereNull('id_groupe')
+                ->inRandomOrder()
+                ->value('id');
+        };
         return [
             'id_user'=>$id_user,
             'libelle' => fake()->text(100),

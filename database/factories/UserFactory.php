@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Groupe;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
@@ -20,19 +21,29 @@ class UserFactory extends Factory
     {
         $password = Hash::make('0000');
         $sex = fake()->randomElement(['homme', 'femme']);
-        $role = fake()->randomElement(['directeur', 'gestionaire','formateur']);
+        $role = fake()->randomElement(['admin', 'formateur', 'stagiaire']);
+        $statut = $role === 'stagiaire'
+            ? fake()->randomElement(['1A', '2A', 'diplomee'])
+            : null;
+        $id_groupe = $role === 'stagiaire'
+            ? function () {
+                $groupes = Groupe::all();
+                return $groupes->isNotEmpty() ? $groupes->random()->id : null;
+            }
+            : null;
         return [
             'nom' => fake()->firstName,
             'prenom' => fake()->lastName,
             'email' => fake()->unique()->safeEmail(),
-            'tel'=> fake()->unique()->phoneNumber,
-            'sex'=> $sex,
-            'role'=>$role,
-            'email_verified_at' => now(),
+            'tel' => fake()->unique()->phoneNumber,
+            'sex' => $sex,
+            'role' => $role,
+            'statut' => $statut,
+            'id_groupe' => $id_groupe,
             'password' => $password,
-//            'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
             'remember_token' => Str::random(10),
         ];
+
     }
 
     /**
@@ -40,7 +51,7 @@ class UserFactory extends Factory
      */
     public function unverified(): static
     {
-        return $this->state(fn (array $attributes) => [
+        return $this->state(fn(array $attributes) => [
             'email_verified_at' => null,
         ]);
     }
