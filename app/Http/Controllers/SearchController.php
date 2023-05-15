@@ -29,9 +29,34 @@ class SearchController extends Controller
             ->orWhere('users.prenom', 'like', '%' . $query . '%')
             ->limit(2)
             ->get();
+
+        $posts = DB::table('postes')
+            ->join('users', 'users.id', '=', 'postes.id_user')
+            ->leftJoin('reacts', 'reacts.id_poste', '=', 'postes.id')
+            ->select(
+                'postes.id as id',
+                'users.id as user_id',
+                'users.nom',
+                'users.prenom',
+                'users.role',
+                'postes.libelle',
+                'postes.type',
+                'postes.audience',
+                'postes.created_at',
+                DB::raw('coalesce(count(reacts.id_poste), 0) as reacts'),
+                'reacts.id_user as liked'
+            )
+            ->where('users.nom', 'like', '%' . $query . '%')
+            ->orWhere('users.prenom', 'like', '%' . $query . '%')
+            ->orWhere('postes.libelle', 'like', '%' . $query . '%')
+            ->groupBy('postes.id', 'reacts.id_user')
+            ->orderBy('created_at', 'desc')
+            ->get();
+
         return [
             'stagiaires' => $stagiaires,
-            'users' => $users
+            'users' => $users,
+            'posts'=>$posts
         ];
     }
 }

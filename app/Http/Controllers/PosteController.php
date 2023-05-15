@@ -53,9 +53,7 @@ class PosteController extends Controller
         return response([
             'postes' => $postes,
         ]);
-//            ->header('Access-Control-Allow-Credentials', 'true')
-//            ->header('Access-Control-Allow-Origin', 'http://localhost:3000') // replace with your frontend URL
-//            ->header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+
     }
 
 
