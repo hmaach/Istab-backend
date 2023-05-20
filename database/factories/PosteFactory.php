@@ -18,18 +18,22 @@ class PosteFactory extends Factory
      */
     public function definition(): array
     {
-        $type = fake()->randomElement(['announce', 'cour','exercice','note']);
-        $audience = fake()->randomElement(['tous', 'filiere','groupe']);
-        $id_user = function() {
-            return User::whereNull('id_groupe')
+        $type = fake()->randomElement(['announce', 'cour', 'exercice']);
+        $audience = fake()->randomElement(['public', 'etablissement', 'filiere', 'formateurs']);
+        $audience_id = ($audience === 'filiere') ? fake()->numberBetween(1, 4) : null;
+
+        $user_id = function () {
+            return User::whereNull('groupe_id')
                 ->inRandomOrder()
                 ->value('id');
         };
+
         return [
-            'id_user'=>$id_user,
+            'user_id' => $user_id,
             'libelle' => fake()->text(100),
             'type' => $type,
             'audience' => $audience,
+            'audience_id' => $audience_id,
         ];
     }
 }

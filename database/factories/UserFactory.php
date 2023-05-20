@@ -25,7 +25,7 @@ class UserFactory extends Factory
         $statut = $role === 'stagiaire'
             ? fake()->randomElement(['1A', '2A', 'diplomee'])
             : null;
-        $id_groupe = $role === 'stagiaire'
+        $groupe_id = $role === 'stagiaire'
             ? function () {
                 $groupes = Groupe::all();
                 return $groupes->isNotEmpty() ? $groupes->random()->id : null;
@@ -39,7 +39,7 @@ class UserFactory extends Factory
             'sex' => $sex,
             'role' => $role,
             'statut' => $statut,
-            'id_groupe' => $id_groupe,
+            'groupe_id' => $groupe_id,
             'password' => $password,
             'remember_token' => Str::random(10),
         ];

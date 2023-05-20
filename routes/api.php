@@ -7,6 +7,7 @@ use \App\Http\Controllers\SearchController;
 use \App\Http\Controllers\PosteController;
 use \App\Http\Controllers\NotificationController;
 use \App\Http\Controllers\StagiaireController;
+use \App\Http\Controllers\FiliereController;
 
 
 Route::controller(AuthController::class)->group(function () {
@@ -15,12 +16,18 @@ Route::controller(AuthController::class)->group(function () {
     Route::post('logout', 'logout')->middleware('auth:sanctum');
 });
 
-Route::middleware('auth:sanctum')->resource('poste', PosteController::class);
 Route::middleware('auth:sanctum')->group(function () {
+
+    Route::resource('poste',PosteController::class);
     Route::controller(PosteController::class)->group(function () {
+        Route::put('poste/update', 'update');
         Route::post('/poste/{postId}/like', 'likePost');
     });
+    Route::resource('filiere',FiliereController::class);
+
 });
+
+Route::get('/downloadpdf', [\App\Http\Controllers\PDFController::class, 'downloadPDF']);
 Route::get('/search', [SearchController::class, 'globalSearch']);
 Route::get('/edit', [PosteController::class, 'edit']);
 Route::resource('postespublic', PosteController::class);

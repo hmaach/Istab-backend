@@ -17,12 +17,10 @@ return new class extends Migration
             $table->string('institut');
             $table->date('dateDeb');
             $table->date('dateFin');
-            $table->unsignedBigInteger('id_user');
-            $table->foreign('id_user')
-                ->references('id')
-                ->on('users')
-                ->onUpdate('cascade')
-                ->onDelete('cascade');
+            $table->foreignIdFor(\App\Models\User::class)
+                ->constrained()
+                ->cascadeOnDelete()
+                ->cascadeOnUpdate();
             $table->timestamps();
         });
     }

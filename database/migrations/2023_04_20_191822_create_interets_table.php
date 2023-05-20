@@ -14,12 +14,10 @@ return new class extends Migration
         Schema::create('interets', function (Blueprint $table) {
             $table->id();
             $table->string('libelle');
-            $table->unsignedBigInteger('id_user');
-            $table->foreign('id_user')
-                ->references('id')
-                ->on('users')
-                ->onUpdate('cascade')
-                ->onDelete('cascade');
+            $table->foreignIdFor(\App\Models\User::class)
+                ->constrained()
+                ->cascadeOnDelete()
+                ->cascadeOnUpdate();
             $table->timestamps();
         });
     }

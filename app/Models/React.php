@@ -17,8 +17,18 @@ class React extends Model
     public function rules()
     {
         return [
-            'id_user' => 'required|exists:users,id|unique:reacts,id_user,NULL,id_poste,' . $this->id_poste,
-            'id_poste' => 'required|exists:postes,id|unique:reacts,id_poste,NULL,id_user,' . $this->id_user,
+            'poste_id' => 'required|exists:users,id|unique:reacts,user_id,NULL,poste_id,' . $this->poste_id,
+            'user_id' => 'required|exists:postes,id|unique:reacts,poste_id,NULL,user_id,' . $this->user_id,
         ];
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function poste()
+    {
+        return $this->belongsTo(Poste::class);
     }
 }

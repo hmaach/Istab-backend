@@ -10,16 +10,16 @@ return new class extends Migration
     {
         Schema::create('postes', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('id_user');
             $table->string('libelle')->nullable();
             $table->string('type');
             $table->string('audience');
+            $table->string('pdf_path')->nullable();
+            $table->integer('audience_id')->nullable();
             $table->timestamps();
-            $table->foreign('id_user')
-                ->references('id')
-                ->on('users')
-                ->onUpdate('cascade')
-                ->onDelete('cascade');
+            $table->foreignIdFor(\App\Models\User::class)
+                ->constrained()
+                ->cascadeOnDelete()
+                ->cascadeOnUpdate();
         });
     }
 

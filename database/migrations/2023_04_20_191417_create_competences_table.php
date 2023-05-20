@@ -15,12 +15,10 @@ return new class extends Migration
             $table->id();
             $table->string('categorie');
             $table->string('desc');
-            $table->unsignedBigInteger('id_user');
-            $table->foreign('id_user')
-                ->references('id')
-                ->on('users')
-                ->onUpdate('cascade')
-                ->onDelete('cascade');
+            $table->foreignIdFor(\App\Models\User::class)
+                ->constrained()
+                ->cascadeOnDelete()
+                ->cascadeOnUpdate();
             $table->timestamps();
         });
     }

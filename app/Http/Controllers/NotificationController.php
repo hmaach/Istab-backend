@@ -14,9 +14,9 @@ class NotificationController extends Controller
     public function index()
     {
         $notifs = DB::table('notifications')
-            ->leftJoin('postes', 'postes.id', '=', 'notifications.id_poste')
-            ->leftJoin('evenements', 'evenements.id', '=', 'notifications.id_evenement')
-            ->join('users', 'users.id', '=', 'postes.id_user')
+            ->leftJoin('postes', 'postes.id', '=', 'notifications.poste_id')
+            ->leftJoin('evenements', 'evenements.id', '=', 'notifications.evenement_id')
+            ->join('users', 'users.id', '=', 'postes.user_id')
             ->select(
                 'notifications.id as id',
                 'users.id as user_id',

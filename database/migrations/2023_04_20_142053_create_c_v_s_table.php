@@ -13,13 +13,10 @@ return new class extends Migration
     {
         Schema::create('c_v_s', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('user_id');
-            $table->foreign('user_id')
-                ->references('id')
-                ->on('users')
-                ->primary()
-                ->onUpdate('cascade')
-                ->onDelete('cascade');
+            $table->foreignIdFor(\App\Models\User::class)
+                ->constrained()
+                ->cascadeOnDelete()
+                ->cascadeOnUpdate();
             $table->longText('propos');
             $table->boolean('intimite');
             $table->date('dateNais');

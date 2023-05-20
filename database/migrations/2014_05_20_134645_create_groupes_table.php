@@ -14,12 +14,10 @@ return new class extends Migration
         Schema::create('groupes', function (Blueprint $table) {
             $table->id();
             $table->string('libelle');
-            $table->unsignedBigInteger('id_filiere');
-            $table->foreign('id_filiere')
-                ->references('id')
-                ->on('filieres')
-                ->onUpdate('cascade')
-                ->onDelete('cascade');
+            $table->foreignIdFor(\App\Models\Filiere::class)
+                ->constrained()
+                ->cascadeOnUpdate()
+                ->cascadeOnDelete();
             $table->date("dateDeb");
             $table->date("dateFin");
             $table->timestamps();

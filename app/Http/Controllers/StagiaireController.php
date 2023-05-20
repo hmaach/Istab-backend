@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -10,19 +11,13 @@ class StagiaireController extends Controller
 
     public function randomFourStagiaires()
     {
-        $stagiaires = DB::table('users')
-            ->join('groupes', 'users.id_groupe', '=', 'groupes.id')
-            ->join('filieres', 'groupes.id_filiere', '=', 'filieres.id')
-            ->select(
-                'users.id',
-                'users.nom',
-                'users.prenom',
-                'filieres.libelle as filiere'
-            )
-            ->whereNotNull('id_groupe')
+
+        $stagiaires = User::with("groupe.filiere")
+            ->whereNotNull('groupe_id')
             ->inRandomOrder()
             ->limit(4)
             ->get();
+
         return response([
             "stagiaires" => $stagiaires
         ]);

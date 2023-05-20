@@ -72,8 +72,24 @@ class User extends Authenticatable
         return $this->hasMany(Evenement::class);
     }
 
+    public function reacts()
+    {
+        return $this->hasMany(React::class);
+    }
+
+    public function groupe()
+    {
+        return $this->belongsTo(Groupe::class);
+    }
+
+
     public function cv()
     {
         return $this->hasOne(CV::class);
+    }
+
+    public function pdfCategories()
+    {
+        return $this->hasMany(PdfCategorie::class);
     }
 }

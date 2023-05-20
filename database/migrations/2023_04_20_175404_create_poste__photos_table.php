@@ -12,20 +12,16 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('poste__photos', function (Blueprint $table) {
-            $table->primary(['id_poste','id_photo']);
-            $table->unsignedBigInteger('id_photo');
-            $table->unsignedBigInteger('id_poste');
+            $table->primary(['poste_id', 'photo_id']);
             $table->timestamps();
-            $table->foreign('id_poste')
-                ->references('id')
-                ->on('postes')
-                ->onUpdate('cascade')
-                ->onDelete('cascade');
-            $table->foreign('id_photo')
-                ->references('id')
-                ->on('photos')
-                ->onUpdate('cascade')
-                ->onDelete('cascade');
+            $table->foreignIdFor(\App\Models\Poste::class)
+                ->constrained()
+                ->cascadeOnDelete()
+                ->cascadeOnUpdate();
+            $table->foreignIdFor(\App\Models\Photo::class)
+                ->constrained()
+                ->cascadeOnUpdate()
+                ->cascadeOnDelete();
         });
     }
 

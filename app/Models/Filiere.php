@@ -13,4 +13,11 @@ class Filiere extends Model
         'libelle',
         'niveau'
     ];
+
+    public function groupes()
+    {
+        return $this->hasMany(Groupe::class);
+    }
+
+
 }

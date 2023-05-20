@@ -4,15 +4,19 @@ namespace App\Http\Controllers;
 
 use App\Models\Filiere;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class FiliereController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index():Response
     {
-        //
+        $filieres = Filiere::with('groupes')->get();
+        return response([
+            'filieres'=>$filieres
+        ]);
     }
 
     /**

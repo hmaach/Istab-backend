@@ -47,29 +47,6 @@ class AuthController extends Controller
         return 'You just created a user with : \r\n email : a@a.com \r\n password : aaaa';
     }
 
-//    public function login(Request $request)
-//    {
-//        if (!Auth::attempt($request->only('email', 'password'))) {
-//            return response([
-//                'message' => 'invalid login'
-//            ], Response::HTTP_UNAUTHORIZED);
-//        }
-//        $credentials = $request->validate([
-//            'email' => 'required',
-//            'password' => 'required',
-//        ]);
-//
-//        $user = Auth::user();
-//        $token = $user->createToken('token')->plainTextToken;
-//        $cookie = cookie('jwt', $token, 60 * 24);
-////        return response([
-////            "message" => "Success"
-////        ])->withCookie($cookie);
-//        return response([
-//            'user' => $user,
-//            'token' => $token,
-//        ])->withCookie($cookie);
-//    }
 
     public function login(Request $request)
     {
@@ -84,6 +61,7 @@ class AuthController extends Controller
         ]);
 
         $user = Auth::user();
+        $user->pdfCategories;
         $token = $user->createToken('token')->plainTextToken;
         $cookie = cookie('jwt', $token, 60 * 24);
 

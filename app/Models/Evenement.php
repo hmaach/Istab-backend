@@ -9,4 +9,15 @@ class Evenement extends Model
 {
     use HasFactory;
     protected $searchable = [];
+
+
+    public function notification()
+    {
+        return $this->hasOne(Notification::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

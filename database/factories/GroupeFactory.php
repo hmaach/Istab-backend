@@ -35,7 +35,7 @@ class GroupeFactory extends Factory
 
         return [
             'libelle' => $this->faker->randomElement($groups),
-            'id_filiere' => function() use ($ext) {
+            'filiere_id' => function() use ($ext) {
                 return Filiere::where('extention', $ext)->first()->id;
             },
             'dateDeb' => $this->faker->date(),

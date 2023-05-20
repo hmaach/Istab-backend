@@ -14,12 +14,10 @@ return new class extends Migration
         Schema::create('missions', function (Blueprint $table) {
             $table->id();
             $table->string('libelle');
-            $table->unsignedBigInteger('id_experience');
-            $table->foreign('id_experience')
-                ->references('id')
-                ->on('experiences')
-                ->onUpdate('cascade')
-                ->onDelete('cascade');
+            $table->foreignIdFor(\App\Models\User::class)
+                ->constrained()
+                ->cascadeOnDelete()
+                ->cascadeOnUpdate();
             $table->timestamps();
         });
     }

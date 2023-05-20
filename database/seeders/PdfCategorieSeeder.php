@@ -2,19 +2,19 @@
 
 namespace Database\Seeders;
 
-use App\Models\React;
+use App\Models\PdfCategorie;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
-class ReactSeeder extends Seeder
+class PdfCategorieSeeder extends Seeder
 {
     /**
      * Run the database seeds.
      */
     public function run(): void
     {
-        React::factory()
-            ->count(60)
+        PdfCategorie::factory()
+            ->count(80)
             ->create();
     }
 }

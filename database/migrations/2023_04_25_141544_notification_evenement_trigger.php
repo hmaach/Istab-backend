@@ -17,7 +17,7 @@ return new class extends Migration
         AFTER INSERT ON `evenements`
         FOR EACH ROW
                 BEGIN
-                   INSERT INTO `notifications` (`id_evenement`,`dateNotif`) VALUES (NEW.id,CURTIME());
+                   INSERT INTO `notifications` (`evenement_id`,`dateNotif`) VALUES (NEW.id,CURTIME());
                 END
         ');
     }

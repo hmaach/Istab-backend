@@ -13,15 +13,13 @@ return new class extends Migration
     {
         Schema::create('liens', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('id_poste');
             $table->string('libbele');
             $table->string('url');
             $table->timestamps();
-            $table->foreign('id_poste')
-                ->references('id')
-                ->on('postes')
-                ->onUpdate('cascade')
-                ->onDelete('cascade');
+            $table->foreignIdFor(\App\Models\Poste::class)
+                ->constrained()
+                ->cascadeOnDelete()
+                ->cascadeOnUpdate();
         });
     }
 

@@ -12,9 +12,21 @@ class PDFController extends Controller
      */
     public function index()
     {
-        //
+
     }
 
+    public function downloadPDF(Request $request)
+    {
+        $pdfPath = $request->input('pdf_path');
+        $filePath = storage_path('app/'.$pdfPath);
+        $fileName = basename($filePath);
+        $headers = [
+            'Content-Type' => 'application/pdf',
+            'Content-Disposition' => 'attachment; filename="' . $fileName . '"',
+        ];
+
+        return response()->file($filePath, $headers);
+    }
     /**
      * Show the form for creating a new resource.
      */
