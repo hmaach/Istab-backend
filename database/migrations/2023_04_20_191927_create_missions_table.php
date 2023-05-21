@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('missions', function (Blueprint $table) {
             $table->id();
             $table->string('libelle');
-            $table->foreignIdFor(\App\Models\User::class)
+            $table->foreignIdFor(\App\Models\Experience::class)
                 ->constrained()
                 ->cascadeOnDelete()
                 ->cascadeOnUpdate();

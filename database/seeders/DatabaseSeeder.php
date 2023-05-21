@@ -17,7 +17,14 @@ class DatabaseSeeder extends Seeder
             GroupeSeeder::class,
             UserSeeder::class,
             PosteSeeder::class,
-            PdfCategorieSeeder::class
+            PdfCategorieSeeder::class,
+            CvSeeder::class,
+            CoordonneesSeeder::class,
+            CompetenceSeeder::class,
+            ExperienceSeeder::class,
+            MissionSeeder::class,
+            FormationSeeder::class,
+            InteretSeeder::class,
         ]);
 
     }
