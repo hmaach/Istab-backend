@@ -88,8 +88,32 @@ class User extends Authenticatable
         return $this->hasOne(CV::class);
     }
 
+
+
+
+
+    public function competences()
+    {
+        return $this->hasMany(Competence::class);
+    }
+
+    public function experiences()
+    {
+        return $this->hasMany(Experience::class);
+    }
+
+    public function formations()
+    {
+        return $this->hasMany(Formation::class);
+    }
+
     public function pdfCategories()
     {
         return $this->hasMany(PdfCategorie::class);
+    }
+
+    public function interets()
+    {
+        return $this->hasMany(Interet::class);
     }
 }

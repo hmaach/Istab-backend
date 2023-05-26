@@ -3,13 +3,18 @@
 namespace Database\Factories;
 
 use App\Models\User;
+use App\Models\Experience;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-/**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Experience>
- */
 class ExperienceFactory extends Factory
 {
+    /**
+     * The name of the factory's corresponding model.
+     *
+     * @var string
+     */
+    protected $model = Experience::class;
+
     /**
      * Define the model's default state.
      *
@@ -18,14 +23,21 @@ class ExperienceFactory extends Factory
     public function definition(): array
     {
         return [
-            "user_id" => function () {
+            'user_id' => function () {
                 return User::query()
-                    ->where('role','=','stagiaire')
-                    ->get()->random();
+                    ->where('role', '=', 'stagiaire')
+                    ->get()->random()->id;
             },
-            "titre" => fake()->text(30),
-            "dateDeb" => fake()->date(),
-            "dateFin" => fake()->date()
+            'titre' => $this->faker->text(30),
+            'dateDeb' => $this->faker->date(),
+            'dateFin' => $this->faker->date(),
+            'place' => $this->faker->address, // Faker-generated place
+            'missions' => json_encode([
+                $this->faker->sentence,
+                $this->faker->sentence,
+                $this->faker->sentence,
+            ]) // Faker-generated missions
         ];
     }
 }
+

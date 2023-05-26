@@ -14,8 +14,10 @@ return new class extends Migration
         Schema::create('experiences', function (Blueprint $table) {
             $table->id();
             $table->string('titre');
+            $table->string('place'); // New column: place
             $table->date('dateDeb');
             $table->date('dateFin');
+            $table->json('missions'); // New column: missions
             $table->foreignIdFor(\App\Models\User::class)
                 ->constrained()
                 ->cascadeOnDelete()

@@ -27,10 +27,43 @@ class StagiaireController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $id = $request->input("id");
+        $stagiaire = User::with('cv')->find($id);
+        $stagiaire->interets;
+        $stagiaire->groupe;
+        $stagiaire->competences;
+        $stagiaire->experiences;
+        $stagiaire->formations;
+        $stagiaire->groupe->filiere;
+        return response([
+            "stagiaire" => $stagiaire
+        ]);
     }
+
+    public function update(Request $request, string $id)
+    {
+        $user = Auth::user();
+        if ($user) {
+            $stagiaire = User::findOrFail($id);
+            $cv = $stagiaire->cv;
+            $cv->propos = $request->input('propos');
+            $cv->save();
+
+            return response()->json([
+                'message' => 'CV updated successfully',
+            ]);
+        } else {
+            return response([
+                'message' => "not logged in"
+            ]);
+        }
+    }
+
+
+
+
 
     /**
      * Show the form for creating a new resource.
@@ -67,10 +100,9 @@ class StagiaireController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
+
+
+
 
     /**
      * Remove the specified resource from storage.

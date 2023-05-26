@@ -33,3 +33,9 @@ Route::get('/edit', [PosteController::class, 'edit']);
 Route::resource('postespublic', PosteController::class);
 Route::resource('notifs', NotificationController::class);
 Route::get('fourstagiaires', [StagiaireController::class, 'randomFourStagiaires']);
+
+
+
+Route::get('stagiaire/{id}', [StagiaireController::class, 'index']);
+Route::put('stagiaire/{id}', [StagiaireController::class, 'update']);
+

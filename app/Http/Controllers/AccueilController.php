@@ -16,7 +16,7 @@ class AccueilController extends Controller
     public function index()
     {
         $notification = Notification::orderBy('dateNotif', 'desc')->limit(3)->get();
-        $stagiaires = User::whereNotNull('id_groupe')->inRandomOrder()->limit(4)->get();
+        $stagiaires = User::whereNotNull('groupe_id')->inRandomOrder()->limit(4)->get();
         $postes = Poste::orderBy('created_at', 'desc')->simplePaginate(4);
         //dd($notification);
         return view('index',[
