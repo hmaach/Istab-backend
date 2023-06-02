@@ -11,11 +11,11 @@ class PDF extends Model
 
     public function post()
     {
-        $this->belongsTo(Poste::class);
+       return $this->belongsTo(Poste::class);
     }
 
     public function class_pdf()
     {
-        $this->belongsTo(Classe_PDF::class);
+       return $this->belongsTo(Classe_PDF::class);
     }
 }

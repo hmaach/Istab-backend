@@ -11,17 +11,20 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('groupe__photos', function (Blueprint $table) {
-            $table->primary(['groupe_id','photo_id']);
-            $table->timestamps();
-            $table->foreignIdFor(\App\Models\Groupe::class)
+        Schema::create('photos', function (Blueprint $table) {
+            $table->id();
+            $table->foreignIdFor(\App\Models\Poste::class)
+                ->nullable()
                 ->constrained()
                 ->cascadeOnDelete()
                 ->cascadeOnUpdate();
-            $table->foreignIdFor(\App\Models\Photo::class)
+            $table->foreignIdFor(\App\Models\User::class)
+                ->nullable()
                 ->constrained()
-                ->cascadeOnUpdate()
-                ->cascadeOnDelete();
+                ->cascadeOnDelete()
+                ->cascadeOnUpdate();
+            $table->string('path');
+            $table->timestamps();
         });
     }
 
@@ -30,6 +33,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('groupe__photos');
+        Schema::dropIfExists('photos');
     }
 };

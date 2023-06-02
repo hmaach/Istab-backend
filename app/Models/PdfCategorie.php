@@ -11,11 +11,11 @@ class PdfCategorie extends Model
 
     public function user()
     {
-        $this->belongsTo(User::class);
+        return $this->belongsTo(User::class);
     }
 
     public function pdfs()
     {
-        $this->hasMany(PDF::class);
+        return $this->hasMany(PDF::class);
     }
 }

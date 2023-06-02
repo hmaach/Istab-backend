@@ -2,17 +2,28 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Classe_PDF;
+use App\Models\PDF;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
-class ClassePDFController extends Controller
+class ArchiveController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        //
+        $user = Auth::user();
+
+        if (!$user) {
+            return response([
+                'message' => "not logged in",
+            ]);
+        }
+        $pdfCategories = $user->pdfCategories()->with('pdfs')->get();
+        return response([
+            'pdfCategories'=>$pdfCategories
+        ]);
     }
 
     /**
@@ -34,7 +45,7 @@ class ClassePDFController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Classe_PDF $classe_PDF)
+    public function show(string $id)
     {
         //
     }
@@ -42,7 +53,7 @@ class ClassePDFController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Classe_PDF $classe_PDF)
+    public function edit(string $id)
     {
         //
     }
@@ -50,7 +61,7 @@ class ClassePDFController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Classe_PDF $classe_PDF)
+    public function update(Request $request, string $id)
     {
         //
     }
@@ -58,7 +69,7 @@ class ClassePDFController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Classe_PDF $classe_PDF)
+    public function destroy(string $id)
     {
         //
     }

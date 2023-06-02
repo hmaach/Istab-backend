@@ -8,6 +8,7 @@ use \App\Http\Controllers\PosteController;
 use \App\Http\Controllers\NotificationController;
 use \App\Http\Controllers\StagiaireController;
 use \App\Http\Controllers\FiliereController;
+use \App\Http\Controllers\ArchiveController;
 
 
 Route::controller(AuthController::class)->group(function () {
@@ -18,12 +19,13 @@ Route::controller(AuthController::class)->group(function () {
 
 Route::middleware('auth:sanctum')->group(function () {
 
-    Route::resource('poste',PosteController::class);
+    Route::resource('poste', PosteController::class);
+    Route::resource('archive', ArchiveController::class);
     Route::controller(PosteController::class)->group(function () {
         Route::put('poste/update', 'update');
         Route::post('/poste/{postId}/like', 'likePost');
     });
-    Route::resource('filiere',FiliereController::class);
+    Route::resource('filiere', FiliereController::class);
 
 });
 

@@ -12,12 +12,14 @@ return new class extends Migration {
     {
         Schema::create('p_d_f_s', function (Blueprint $table) {
             $table->id();
+            $table->string('libelle')->nullable();
             $table->string('path');
             $table->foreignIdFor(\App\Models\Poste::class)
                 ->constrained()
                 ->cascadeOnDelete()
                 ->cascadeOnUpdate();
             $table->foreignIdFor(\App\Models\PdfCategorie::class)
+                ->nullable()
                 ->constrained()
                 ->cascadeOnDelete()
                 ->cascadeOnUpdate();

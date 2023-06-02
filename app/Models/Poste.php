@@ -25,13 +25,14 @@ class Poste extends Model
 
     public function photo()
     {
-        return $this->hasOne(Photo::class);
+        return $this->hasMany(Photo::class);
     }
 
     public function pdf()
     {
         return $this->hasOne(PDF::class);
     }
+
 
 
 }
