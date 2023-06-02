@@ -39,3 +39,5 @@ Route::get('fourstagiaires', [StagiaireController::class, 'randomFourStagiaires'
 Route::get('stagiaire/{id}', [StagiaireController::class, 'index']);
 Route::put('stagiaire/{id}', [StagiaireController::class, 'update']);
 
+
+
