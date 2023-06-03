@@ -5,6 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
+
+
+use App\Models\Photo;
 
 class StagiaireController extends Controller
 {
@@ -71,7 +75,6 @@ class StagiaireController extends Controller
 
 
 
-
     /**
      * Show the form for creating a new resource.
      */
@@ -120,10 +123,9 @@ class StagiaireController extends Controller
     }
     public function handleSaveProfilePicture(Request $request, string $id)
     {
-        $user = Auth::user();
-        if ($user) {
-            $stagiaire = User::findOrFail($id);
+        $user = User::findOrFail($id);
 
+        if ($user) {
             // Check if a file was uploaded
             if ($request->hasFile('profile_picture')) {
                 $file = $request->file('profile_picture');
@@ -131,15 +133,19 @@ class StagiaireController extends Controller
                 // Generate a unique filename
                 $filename = time() . '_' . $file->getClientOriginalName();
 
-                // Store the file in the storage directory
-                Storage::putFileAs('profile_pictures', $file, $filename);
+                // Store the file in the storage/app/public/profile_pictures directory
+                $path = $file->storeAs('public/profile_pictures', $filename);
 
-                // Update the user's profile picture field
-                $stagiaire->profile_picture = $filename;
-                $stagiaire->save();
+                // Create a new photo instance
+                $photo = new Photo();
+                $photo->user_id = $user->id;
+                $photo->path = str_replace("public/", "", $path);
+                $photo->save();
 
                 return response()->json([
                     'message' => 'Profile picture saved successfully',
+                    'path' => $photo->path, // Return the saved profile picture path
+                    'user_id' => $photo->user_id, // Return the user ID associated with the photo
                 ]);
             } else {
                 return response()->json([
@@ -148,8 +154,9 @@ class StagiaireController extends Controller
             }
         } else {
             return response()->json([
-                'message' => 'Not logged in',
-            ]);
+                'message' => 'User not found',
+            ], 404);
         }
     }
+
 }
