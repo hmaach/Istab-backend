@@ -9,6 +9,8 @@ use \App\Http\Controllers\NotificationController;
 use \App\Http\Controllers\StagiaireController;
 use \App\Http\Controllers\FiliereController;
 use \App\Http\Controllers\ArchiveController;
+use App\Http\Controllers\ExcelImportController;
+
 
 
 Route::controller(AuthController::class)->group(function () {
@@ -35,3 +37,14 @@ Route::get('/edit', [PosteController::class, 'edit']);
 Route::resource('postespublic', PosteController::class);
 Route::resource('notifs', NotificationController::class);
 Route::get('fourstagiaires', [StagiaireController::class, 'randomFourStagiaires']);
+
+
+Route::get('stagiaire/{id}', [StagiaireController::class, 'index']);
+Route::put('stagiaire/{id}', [StagiaireController::class, 'update']);
+
+
+Route::post('/stagiaires/import', [ExcelImportController::class, 'import']);
+Route::get('/import', [ExcelImportController::class, 'importView'])->name('import.view');
+Route::post('/stagiaires/import', [ExcelImportController::class, 'import'])->name('import');
+Route::get('/stagiairesExc', [ExcelImportController::class, 'index']);
+
