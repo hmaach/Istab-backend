@@ -9,6 +9,9 @@ use \App\Http\Controllers\NotificationController;
 use \App\Http\Controllers\StagiaireController;
 use \App\Http\Controllers\FiliereController;
 use \App\Http\Controllers\ArchiveController;
+use \App\Http\Controllers\EvenementController;
+use \App\Http\Controllers\PDFController;
+use \App\Http\Controllers\PdfCategorieController;
 
 
 Route::controller(AuthController::class)->group(function () {
@@ -18,18 +21,28 @@ Route::controller(AuthController::class)->group(function () {
 });
 
 Route::middleware('auth:sanctum')->group(function () {
-
     Route::resource('poste', PosteController::class);
-    Route::resource('archive', ArchiveController::class);
+    Route::resource('events', EvenementController::class);
+    Route::resource('filiere', FiliereController::class);
+    Route::resource('category', PdfCategorieController::class);
+    Route::get('ownarchive', [PdfCategorieController::class, 'index']);
+    Route::put('category/update/{category}', [PdfCategorieController::class, 'update']);
     Route::controller(PosteController::class)->group(function () {
         Route::put('poste/update', 'update');
         Route::post('/poste/{postId}/like', 'likePost');
     });
-    Route::resource('filiere', FiliereController::class);
 
+    Route::controller(PDFController::class)->group(function () {
+        Route::put('pdf/update/{pdf}', 'update');
+        Route::post('pdf/removecategory/{pdf}', 'removeCategory');
+    });
 });
 
-Route::get('/downloadpdf', [\App\Http\Controllers\PDFController::class, 'downloadPDF']);
+Route::get('archive', [PdfCategorieController::class, 'index']);
+Route::resource('/pdf', PDFController::class);
+
+Route::get('/downloadpdf', [PDFController::class, 'downloadPDF']);
+Route::get('eventspublic', [EvenementController::class, 'index']);
 Route::get('/search', [SearchController::class, 'globalSearch']);
 Route::get('/edit', [PosteController::class, 'edit']);
 Route::resource('postespublic', PosteController::class);

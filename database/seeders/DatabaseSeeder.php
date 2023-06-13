@@ -25,6 +25,7 @@ class DatabaseSeeder extends Seeder
             MissionSeeder::class,
             FormationSeeder::class,
             InteretSeeder::class,
+            EvenementsSeeder::class,
         ]);
 
     }

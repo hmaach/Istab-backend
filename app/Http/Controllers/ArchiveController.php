@@ -21,8 +21,13 @@ class ArchiveController extends Controller
             ]);
         }
         $pdfCategories = $user->pdfCategories()->with('pdfs')->get();
+        $pdfCategoriesWithUser = $pdfCategories->map(function ($category) use ($user) {
+            $category['user_name'] = $user->prenom.' '.$user->nom; // Add user name to each category
+            return $category;
+        });
+
         return response([
-            'pdfCategories'=>$pdfCategories
+            'pdfCategories'=>$pdfCategoriesWithUser
         ]);
     }
 
