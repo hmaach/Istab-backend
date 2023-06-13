@@ -19,7 +19,7 @@ return new class extends Migration
                 ->cascadeOnDelete();
             $table->string('description');
             $table->string('titre');
-            $table->string('coleur');
+            $table->string('couleur');
             $table->string('type')->nullable();
             $table->string('audience')->default('tous');
             $table->dateTime('dateDeb');

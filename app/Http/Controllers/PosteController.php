@@ -19,209 +19,321 @@ use PhpParser\Node\Scalar\String_;
 
 class PosteController extends Controller
 {
+//    public function index(Request $request)
+//    {
+//        $perPage = 6;
+//        if (Auth::check()) {
+//            $user = Auth::user();
+//            $filieres = [];
+//            $postes = [];
+//
+//            if ($user->role === "admin") {
+//                $filieres = Filiere::all(['id', 'libelle']);
+//                $postes = Poste::select(
+//                    'postes.id as id',
+//                    'users.id as user_id',
+//                    'users.nom',
+//                    'users.prenom',
+//                    'users.role',
+//                    'postes.libelle',
+//                    'postes.type',
+//                    'postes.audience',
+//                    'postes.created_at',
+//                    'filieres.extention as filiere_extention',
+//                    DB::raw('coalesce(count(reacts.poste_id), 0) as reacts'),
+//                    'reacts.user_id as liked',
+//                    'p_d_f_s.path as pdf_path',
+//                )
+//                    ->join('users', 'users.id', '=', 'postes.user_id')
+//                    ->leftJoin('reacts', 'reacts.poste_id', '=', 'postes.id')
+//                    ->leftJoin('filieres', 'filieres.id', '=', 'postes.audience_id')
+//                    ->leftJoin('p_d_f_s', 'p_d_f_s.poste_id', '=', 'postes.id')
+//                    ->groupBy('postes.id', 'reacts.user_id', 'p_d_f_s.path')
+//                    ->orderBy('created_at', 'desc')
+//                    ->get();
+//
+//                foreach ($postes as $post) {
+//                    $post->liked = React::where('poste_id', $post->id)
+//                        ->where('user_id', $user->id)
+//                        ->exists();
+//                    $post->images = Photo::where('poste_id', $post->id)
+//                        ->pluck('path')
+//                        ->map(function ($path) {
+//                            return asset('storage/' . $path);
+//                        })
+//                        ->toArray();
+//                }
+//                $page = $request->query('page', 1);
+//                $postes = $postes->forPage($page, $perPage)->values();
+//                $hasMore = $postes->count() > $perPage;
+//
+//                return response([
+//                    'postes' => $postes,
+//                    'filieres' => $filieres,
+//                    'hasMore' => $hasMore,
+//                ]);
+//            } elseif ($user->role === "formateur") {
+//                $filieres = Filiere::all(['id', 'libelle']);
+//                $postes = Poste::select(
+//                    'postes.id as id',
+//                    'users.id as user_id',
+//                    'users.nom',
+//                    'users.prenom',
+//                    'users.role',
+//                    'postes.libelle',
+//                    'postes.type',
+//                    'postes.audience',
+//                    'postes.created_at',
+//                    'filieres.extention as filiere_extention',
+//                    DB::raw('coalesce(count(reacts.poste_id), 0) as reacts'),
+//                    'reacts.user_id as liked',
+//                    'p_d_f_s.path as pdf_path',
+//                )
+//                    ->join('users', 'users.id', '=', 'postes.user_id')
+//                    ->leftJoin('reacts', 'reacts.poste_id', '=', 'postes.id')
+//                    ->leftJoin('filieres', 'filieres.id', '=', 'postes.audience_id')
+//                    ->leftJoin('p_d_f_s', 'p_d_f_s.poste_id', '=', 'postes.id')
+//                    ->groupBy('postes.id', 'reacts.user_id', 'p_d_f_s.path', 'p_d_f_s.path')
+//                    ->where(function ($query) {
+//                        $query->where('audience', '=', 'public')
+//                            ->orWhere('audience', '=', 'etablissement')
+//                            ->orWhere('audience', '=', 'formateurs');
+//                    })
+//                    ->orderBy('created_at', 'desc')
+//                    ->get();
+//
+//                foreach ($postes as $post) {
+//                    $post->liked = React::where('poste_id', $post->id)
+//                        ->where('user_id', $user->id)
+//                        ->exists();
+//                    $post->images = Photo::where('poste_id', $post->id)
+//                        ->pluck('path')
+//                        ->map(function ($path) {
+//                            return asset('storage/' . $path);
+//                        })
+//                        ->toArray();
+//                }
+//                $page = $request->query('page', 1);
+//                $postes = $postes->forPage($page, $perPage)->values();
+//                $hasMore = $postes->count() > $perPage;
+//
+//                return response([
+//                    'postes' => $postes,
+//                    'filieres' => $filieres,
+//                    'hasMore' => $hasMore,
+//                ]);
+//            } else {
+//                $postes = Poste::select(
+//                    'postes.id as id',
+//                    'users.id as user_id',
+//                    'users.nom',
+//                    'users.prenom',
+//                    'users.role',
+//                    'postes.libelle',
+//                    'postes.type',
+//                    'postes.audience',
+//                    'postes.created_at',
+//                    'filieres.extention as filiere_extention',
+//                    DB::raw('coalesce(count(reacts.poste_id), 0) as reacts'),
+//                    'reacts.user_id as liked',
+//                    'p_d_f_s.path as pdf_path',
+//                )
+//                    ->join('users', 'users.id', '=', 'postes.user_id')
+//                    ->leftJoin('reacts', 'reacts.poste_id', '=', 'postes.id')
+//                    ->leftJoin('filieres', 'filieres.id', '=', 'postes.audience_id')
+//                    ->leftJoin('p_d_f_s', 'p_d_f_s.poste_id', '=', 'postes.id')
+//                    ->groupBy('postes.id', 'reacts.user_id', 'p_d_f_s.path')
+//                    ->orderBy('created_at', 'desc')
+//                    ->where(function ($query) use ($user) {
+//                        $query->where('postes.audience', 'public')
+//                            ->orWhere('postes.audience', 'etablissement')
+//                            ->orWhere(function ($subquery) use ($user) {
+//                                $subquery->where('postes.audience', 'filiere')
+//                                    ->whereIn('postes.audience_id', function ($subsubquery) use ($user) {
+//                                        $subsubquery->select('groupes.filiere_id')
+//                                            ->from('groupes')
+//                                            ->where('groupes.id', '=', $user->groupe_id);
+//                                    });
+//                            });
+//                    })
+//                    ->get();
+//
+//                foreach ($postes as $post) {
+//                    $post->liked = React::where('poste_id', $post->id)
+//                        ->where('user_id', $user->id)
+//                        ->exists();
+//                    $post->images = Photo::where('poste_id', $post->id)
+//                        ->pluck('path')
+//                        ->map(function ($path) {
+//                            return asset('storage/' . $path);
+//                        })
+//                        ->toArray();
+//                }
+//                $page = $request->query('page', 1);
+//                $postes = $postes->forPage($page, $perPage)->values();
+//                $hasMore = $postes->count() > $perPage;
+//
+//                return response([
+//                    'postes' => $postes,
+//                    'hasMore' => $hasMore,
+//                ]);
+//            }
+//        } else {
+//            $postes = Poste::select(
+//                'postes.id as id',
+//                'users.id as user_id',
+//                'users.nom',
+//                'users.prenom',
+//                'users.role',
+//                'postes.libelle',
+//                'postes.type',
+//                'postes.audience',
+//                'postes.created_at',
+//                'filieres.extention as filiere_extention',
+//                DB::raw('coalesce(count(reacts.poste_id), 0) as reacts'),
+//                'reacts.user_id as liked',
+//                'p_d_f_s.path as pdf_path',
+//            )
+//                ->join('users', 'users.id', '=', 'postes.user_id')
+//                ->leftJoin('reacts', 'reacts.poste_id', '=', 'postes.id')
+//                ->leftJoin('filieres', 'filieres.id', '=', 'postes.audience_id')
+//                ->leftJoin('p_d_f_s', 'p_d_f_s.poste_id', '=', 'postes.id')
+//                ->groupBy('postes.id', 'reacts.user_id', 'p_d_f_s.path')
+//                ->where(function ($query) {
+//                    $query->where('audience', '=', 'public');
+//                })
+//                ->orderBy('created_at', 'desc')
+//                ->get();
+//            foreach ($postes as $post) {
+//                $post->images = Photo::where('poste_id', $post->id)
+//                    ->pluck('path')
+//                    ->map(function ($path) {
+//                        return asset('storage/' . $path);
+//                    })
+//                    ->toArray();
+//            }
+//
+//            $page = $request->query('page', 1);
+//            $postes = $postes->forPage($page, $perPage)->values();
+//            $hasMore = $postes->count() > $perPage;
+//
+//            return response([
+//                'postes' => $postes,
+//                'hasMore' => $hasMore,
+//            ]);
+//        }
+//    }
+
+
     public function index(Request $request)
     {
         $perPage = 6;
-        if (Auth::check()) {
+        $type = $request->input('type');
+        $q = $request->input('q');
+        $filieres = [];
+
+        $query = Poste::select(
+            'postes.id as id',
+            'users.id as user_id',
+            'users.nom',
+            'users.prenom',
+            'users.role',
+            'postes.libelle',
+            'postes.type',
+            'postes.audience',
+            'postes.created_at',
+            'filieres.extention as filiere_extention',
+            DB::raw('coalesce(count(reacts.poste_id), 0) as reacts'),
+            'reacts.user_id as liked',
+            'p_d_f_s.path as pdf_path'
+        )
+            ->join('users', 'users.id', '=', 'postes.user_id')
+            ->leftJoin('reacts', 'reacts.poste_id', '=', 'postes.id')
+            ->leftJoin('filieres', 'filieres.id', '=', 'postes.audience_id')
+            ->leftJoin('p_d_f_s', 'p_d_f_s.poste_id', '=', 'postes.id')
+            ->groupBy('postes.id', 'reacts.user_id', 'p_d_f_s.path')
+            ->orderBy('created_at', 'desc');
+
+        if ($type === 'own' && Auth::check()) {
             $user = Auth::user();
-            $filieres = [];
-            $postes = [];
+            $query->where('postes.user_id', $user->id);
+        } else {
+            if (Auth::check()) {
+                $user = Auth::user();
+                $filieres = [];
 
-            if ($user->role === "admin") {
-                $filieres = Filiere::all(['id', 'libelle']);
-                $postes = Poste::select(
-                    'postes.id as id',
-                    'users.id as user_id',
-                    'users.nom',
-                    'users.prenom',
-                    'users.role',
-                    'postes.libelle',
-                    'postes.type',
-                    'postes.audience',
-                    'postes.created_at',
-                    'filieres.extention as filiere_extention',
-                    DB::raw('coalesce(count(reacts.poste_id), 0) as reacts'),
-                    'reacts.user_id as liked',
-                    'p_d_f_s.path as pdf_path',
-                )
-                    ->join('users', 'users.id', '=', 'postes.user_id')
-                    ->leftJoin('reacts', 'reacts.poste_id', '=', 'postes.id')
-                    ->leftJoin('filieres', 'filieres.id', '=', 'postes.audience_id')
-                    ->leftJoin('p_d_f_s', 'p_d_f_s.poste_id', '=', 'postes.id')
-                    ->groupBy('postes.id', 'reacts.user_id', 'p_d_f_s.path')
-                    ->orderBy('created_at', 'desc')
-                    ->get();
-
-                foreach ($postes as $post) {
-                    $post->liked = React::where('poste_id', $post->id)
-                        ->where('user_id', $user->id)
-                        ->exists();
-                    $post->images = Photo::where('poste_id', $post->id)
-                        ->pluck('path')
-                        ->map(function ($path) {
-                            return asset('storage/' . $path);
-                        })
-                        ->toArray();
-                }
-                $page = $request->query('page', 1);
-                $postes = $postes->forPage($page, $perPage)->values();
-                $hasMore = $postes->count() > $perPage;
-
-                return response([
-                    'postes' => $postes,
-                    'filieres' => $filieres,
-                    'hasMore' => $hasMore,
-                ]);
-            } elseif ($user->role === "formateur") {
-                $filieres = Filiere::all(['id', 'libelle']);
-                $postes = Poste::select(
-                    'postes.id as id',
-                    'users.id as user_id',
-                    'users.nom',
-                    'users.prenom',
-                    'users.role',
-                    'postes.libelle',
-                    'postes.type',
-                    'postes.audience',
-                    'postes.created_at',
-                    'filieres.extention as filiere_extention',
-                    DB::raw('coalesce(count(reacts.poste_id), 0) as reacts'),
-                    'reacts.user_id as liked',
-                    'p_d_f_s.path as pdf_path',
-                )
-                    ->join('users', 'users.id', '=', 'postes.user_id')
-                    ->leftJoin('reacts', 'reacts.poste_id', '=', 'postes.id')
-                    ->leftJoin('filieres', 'filieres.id', '=', 'postes.audience_id')
-                    ->leftJoin('p_d_f_s', 'p_d_f_s.poste_id', '=', 'postes.id')
-                    ->groupBy('postes.id', 'reacts.user_id', 'p_d_f_s.path', 'p_d_f_s.path')
-                    ->where(function ($query) {
-                        $query->where('audience', '=', 'public')
-                            ->orWhere('audience', '=', 'etablissement')
-                            ->orWhere('audience', '=', 'formateurs');
-                    })
-                    ->orderBy('created_at', 'desc')
-                    ->get();
-
-                foreach ($postes as $post) {
-                    $post->liked = React::where('poste_id', $post->id)
-                        ->where('user_id', $user->id)
-                        ->exists();
-                    $post->images = Photo::where('poste_id', $post->id)
-                        ->pluck('path')
-                        ->map(function ($path) {
-                            return asset('storage/' . $path);
-                        })
-                        ->toArray();
-                }
-                $page = $request->query('page', 1);
-                $postes = $postes->forPage($page, $perPage)->values();
-                $hasMore = $postes->count() > $perPage;
-
-                return response([
-                    'postes' => $postes,
-                    'filieres' => $filieres,
-                    'hasMore' => $hasMore,
-                ]);
-            } else {
-                $postes = Poste::select(
-                    'postes.id as id',
-                    'users.id as user_id',
-                    'users.nom',
-                    'users.prenom',
-                    'users.role',
-                    'postes.libelle',
-                    'postes.type',
-                    'postes.audience',
-                    'postes.created_at',
-                    'filieres.extention as filiere_extention',
-                    DB::raw('coalesce(count(reacts.poste_id), 0) as reacts'),
-                    'reacts.user_id as liked',
-                    'p_d_f_s.path as pdf_path',
-                )
-                    ->join('users', 'users.id', '=', 'postes.user_id')
-                    ->leftJoin('reacts', 'reacts.poste_id', '=', 'postes.id')
-                    ->leftJoin('filieres', 'filieres.id', '=', 'postes.audience_id')
-                    ->leftJoin('p_d_f_s', 'p_d_f_s.poste_id', '=', 'postes.id')
-                    ->groupBy('postes.id', 'reacts.user_id', 'p_d_f_s.path')
-                    ->orderBy('created_at', 'desc')
-                    ->where(function ($query) use ($user) {
-                        $query->where('postes.audience', 'public')
-                            ->orWhere('postes.audience', 'etablissement')
+                if ($user->role === "admin") {
+                    $filieres = Filiere::all(['id', 'libelle']);
+                    $query->where(function ($query) {
+                    });
+                } elseif ($user->role === "formateur") {
+                    $filieres = Filiere::all(['id', 'libelle']);
+                    $query->where(function ($query) {
+                        $query->where('audience', 'public')
+                            ->orWhere('audience', 'etablissement')
+                            ->orWhere('audience', 'formateurs');
+                    });
+                } else {
+                    $query->where(function ($query) use ($user) {
+                        $query->where('audience', 'public')
+                            ->orWhere('audience', 'etablissement')
                             ->orWhere(function ($subquery) use ($user) {
-                                $subquery->where('postes.audience', 'filiere')
-                                    ->whereIn('postes.audience_id', function ($subsubquery) use ($user) {
+                                $subquery->where('audience', 'filiere')
+                                    ->whereIn('audience_id', function ($subsubquery) use ($user) {
                                         $subsubquery->select('groupes.filiere_id')
                                             ->from('groupes')
                                             ->where('groupes.id', '=', $user->groupe_id);
                                     });
                             });
-                    })
-                    ->get();
-
-                foreach ($postes as $post) {
-                    $post->liked = React::where('poste_id', $post->id)
-                        ->where('user_id', $user->id)
-                        ->exists();
-                    $post->images = Photo::where('poste_id', $post->id)
-                        ->pluck('path')
-                        ->map(function ($path) {
-                            return asset('storage/' . $path);
-                        })
-                        ->toArray();
+                    });
                 }
-                $page = $request->query('page', 1);
-                $postes = $postes->forPage($page, $perPage)->values();
-                $hasMore = $postes->count() > $perPage;
-
-                return response([
-                    'postes' => $postes,
-                    'hasMore' => $hasMore,
-                ]);
+            } else {
+                $query->where('audience', 'public');
             }
-        } else {
-            $postes = Poste::select(
-                'postes.id as id',
-                'users.id as user_id',
-                'users.nom',
-                'users.prenom',
-                'users.role',
-                'postes.libelle',
-                'postes.type',
-                'postes.audience',
-                'postes.created_at',
-                'filieres.extention as filiere_extention',
-                DB::raw('coalesce(count(reacts.poste_id), 0) as reacts'),
-                'reacts.user_id as liked',
-                'p_d_f_s.path as pdf_path',
-            )
-                ->join('users', 'users.id', '=', 'postes.user_id')
-                ->leftJoin('reacts', 'reacts.poste_id', '=', 'postes.id')
-                ->leftJoin('filieres', 'filieres.id', '=', 'postes.audience_id')
-                ->leftJoin('p_d_f_s', 'p_d_f_s.poste_id', '=', 'postes.id')
-                ->groupBy('postes.id', 'reacts.user_id', 'p_d_f_s.path')
-                ->where(function ($query) {
-                    $query->where('audience', '=', 'public');
-                })
-                ->orderBy('created_at', 'desc')
-                ->get();
-            foreach ($postes as $post) {
-                $post->images = Photo::where('poste_id', $post->id)
-                    ->pluck('path')
-                    ->map(function ($path) {
-                        return asset('storage/' . $path);
-                    })
-                    ->toArray();
-            }
-
-            $page = $request->query('page', 1);
-            $postes = $postes->forPage($page, $perPage)->values();
-            $hasMore = $postes->count() > $perPage;
-
-            return response([
-                'postes' => $postes,
-                'hasMore' => $hasMore,
-            ]);
         }
+
+        if ($type != "all") {
+            $query->where('postes.type', $type);
+        }
+
+//        if ($type === 'own' && isset($user)) {
+//            $query->where('postes.user_id', $user->id);
+//        }
+
+        if ($q) {
+            $query->where(function ($query) use ($q) {
+                $query->whereHas('user', function ($subquery) use ($q) {
+                    $subquery->where('nom', 'LIKE', "%$q%")
+                        ->orWhere('prenom', 'LIKE', "%$q%");
+                })
+                    ->orWhere('postes.libelle', 'LIKE', "%$q%");
+            });
+        }
+
+        $postes = $query->get();
+        foreach ($postes as $post) {
+            if (isset($user)) {
+                $post->liked = React::where('poste_id', $post->id)
+                    ->where('user_id', $user->id)
+                    ->exists();
+            }
+            $post->images = Photo::where('poste_id', $post->id)
+                ->pluck('path')
+                ->map(function ($path) {
+                    return asset('storage/' . $path);
+                })
+                ->toArray();
+        }
+
+        $page = $request->query('page', 1);
+        $postes = $postes->forPage($page, $perPage)->values();
+        $hasMore = $postes->count() > $perPage;
+
+        return response([
+            'postes' => $postes,
+            'filieres' => $filieres,
+            'hasMore' => $hasMore,
+        ]);
     }
 
 
@@ -267,11 +379,6 @@ class PosteController extends Controller
                 'message' => "Vous n'avez pas le droit de publier",
             ]);
         }
-//        $img=$request->input('imgs');
-//
-//        return response([
-//            "dd"=>empty($img)
-//        ]);
 
         $poste = new Poste();
         $poste->user_id = $user->id;
@@ -310,22 +417,6 @@ class PosteController extends Controller
 
             $poste->pdf()->save($pdf);
         }
-//
-//        if (!empty($imgs)) {
-//            foreach ($imgs as $img) {
-//                if ($img) {
-//                    $photo = new Photo();
-//                    $imgPath = $img->store('imgs');
-//                    $photo->path = $imgPath;
-//                    $poste->photos()->save($photo);
-//
-//                    $imageData[] = [
-//                        'id' => $photo->id,
-//                        'path' => $imgPath,
-//                    ];
-//                }
-//            }
-//        }
 
         return response([
             'message' => "success",
@@ -334,7 +425,6 @@ class PosteController extends Controller
             'image_data' => $imageData,
         ]);
     }
-
 
 
     public
