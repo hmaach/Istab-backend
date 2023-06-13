@@ -5,6 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
+
+
+use App\Models\Photo;
 
 class StagiaireController extends Controller
 {
@@ -27,10 +31,73 @@ class StagiaireController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request, $id)
     {
-        //
+        $stagiaire = User::with('cv')
+            ->find($id);
+
+        if (!$stagiaire) {
+            return response([
+                "message" => "Stagiaire not found"
+            ], 404);
+        }
+
+        $stagiaire->load('interets', 'groupe', 'competences', 'experiences', 'formations', 'groupe.filiere');
+
+        return response([
+            "stagiaire" => $stagiaire
+        ]);
     }
+
+
+
+
+    public function update(Request $request, $id)
+    {
+        $stagiaire = User::find($id);
+
+        if ($stagiaire) {
+            // Update CV propos
+            $cv = $stagiaire->cv;
+
+            if ($cv) {
+                $cv->propos = $request->input('propos');
+                $cv->save();
+            } else {
+                return response()->json([
+                    'message' => 'CV not found',
+                ]);
+            }
+
+            // Update competences
+            $competences = $request->input('competences');
+
+            if ($competences && is_array($competences)) {
+                foreach ($competences as $competenceData) {
+                    $competence = $stagiaire->competences()->find($competenceData['id']);
+
+                    if ($competence) {
+                        $competence->desc = $competenceData['desc'];
+                        $competence->categorie = $competenceData['categorie'];
+                        $competence->save();
+                    }
+                }
+            }
+
+            return response()->json([
+                'message' => 'CV and competences updated successfully',
+            ]);
+        } else {
+            return response()->json([
+                'message' => 'Stagiaire not found',
+            ]);
+        }
+    }
+
+
+
+
+
 
     /**
      * Show the form for creating a new resource.
@@ -67,10 +134,9 @@ class StagiaireController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
+
+
+
 
     /**
      * Remove the specified resource from storage.
@@ -79,4 +145,42 @@ class StagiaireController extends Controller
     {
         //
     }
+    public function handleSaveProfilePicture(Request $request, string $id)
+    {
+        $user = User::findOrFail($id);
+
+        if ($user) {
+            // Check if a file was uploaded
+            if ($request->hasFile('profile_picture')) {
+                $file = $request->file('profile_picture');
+
+                // Generate a unique filename
+                $filename = time() . '_' . $file->getClientOriginalName();
+
+                // Store the file in the storage/app/public/profile_pictures directory
+                $path = $file->storeAs('public/profile_pictures', $filename);
+
+                // Create a new photo instance
+                $photo = new Photo();
+                $photo->user_id = $user->id;
+                $photo->path = str_replace("public/", "", $path);
+                $photo->save();
+
+                return response()->json([
+                    'message' => 'Profile picture saved successfully',
+                    'path' => $photo->path, // Return the saved profile picture path
+                    'user_id' => $photo->user_id, // Return the user ID associated with the photo
+                ]);
+            } else {
+                return response()->json([
+                    'message' => 'No file uploaded',
+                ]);
+            }
+        } else {
+            return response()->json([
+                'message' => 'User not found',
+            ], 404);
+        }
+    }
+
 }
