@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Evenement;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class EvenementController extends Controller
 {
@@ -12,7 +13,17 @@ class EvenementController extends Controller
      */
     public function index()
     {
-        //
+        if (Auth::check()) {
+            $events = Evenement::all();
+            return response([
+                'events' => $events,
+            ]);
+        }else{
+            $events = Evenement::where('audience','public')->get();
+            return response([
+                'events' => $events,
+            ]);
+        }
     }
 
     /**
