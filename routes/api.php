@@ -32,6 +32,11 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('/poste/{postId}/like', 'likePost');
     });
 
+    Route::resource('filiere', FiliereController::class);
+    Route::post('change-password', [AuthController::class, 'changePassword']);
+
+
+
     Route::controller(PDFController::class)->group(function () {
         Route::put('pdf/update/{pdf}', 'update');
         Route::post('pdf/removecategory/{pdf}', 'removeCategory');
@@ -52,10 +57,15 @@ Route::get('fourstagiaires', [StagiaireController::class, 'randomFourStagiaires'
 
 Route::get('stagiaire/{id}', [StagiaireController::class, 'index']);
 Route::put('stagiaire/{id}', [StagiaireController::class, 'update']);
+Route::get('cv/{id}', [StagiaireController::class, 'show']);
+Route::post('/stagiaires/{id}/add-propos',[StagiaireController::class, 'addPropos'] );
+
+
 
 
 Route::post('/stagiaires/import', [ExcelImportController::class, 'import']);
 Route::get('/import', [ExcelImportController::class, 'importView'])->name('import.view');
 Route::post('/stagiaires/import', [ExcelImportController::class, 'import'])->name('import');
+Route::post('/search', [ExcelImportController::class, 'search'])->name('search');
 Route::get('/stagiairesExc', [ExcelImportController::class, 'index']);
 

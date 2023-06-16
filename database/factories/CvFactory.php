@@ -25,7 +25,6 @@ class CvFactory extends Factory
             },
             "propos" => fake()->text(200),
             "intimite"=> fake()->boolean,
-            "dateNais"=>fake()->date(),
         ];
     }
 }
