@@ -19,11 +19,14 @@ return new class extends Migration
                 ->cascadeOnDelete();
             $table->string('description');
             $table->string('titre');
-            $table->string('couleur');
+            $table->string('couleur')->nullable();
             $table->string('type')->nullable();
-            $table->string('audience')->default('tous');
-            $table->dateTime('dateDeb');
-            $table->dateTime('dateFin');
+            $table->string('audience')->default('public');
+            $table->integer('audience_id')->nullable();
+            $table->date('dateDeb');
+            $table->date('dateFin');
+            $table->time('timeDeb');
+            $table->time('timeFin');
             $table->timestamps();
         });
     }

@@ -42,9 +42,10 @@ Route::get('archive', [PdfCategorieController::class, 'index']);
 Route::resource('/pdf', PDFController::class);
 
 Route::get('/downloadpdf', [PDFController::class, 'downloadPDF']);
-Route::get('eventspublic', [EvenementController::class, 'index']);
 Route::get('/search', [SearchController::class, 'globalSearch']);
 Route::get('/edit', [PosteController::class, 'edit']);
-Route::resource('postespublic', PosteController::class);
+Route::get('eventspublic', [EvenementController::class, 'index']);
+Route::get('showevent/{evenement}', [EvenementController::class, 'show']);
+Route::get('postespublic', [PosteController::class, 'index']);
 Route::resource('notifs', NotificationController::class);
 Route::get('fourstagiaires', [StagiaireController::class, 'randomFourStagiaires']);
