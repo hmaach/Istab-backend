@@ -79,4 +79,26 @@ class AuthController extends Controller
             'message' => 'success'
         ])->withCookie($cookie);
     }
+
+    public function changePassword(Request $request)
+    {
+        $user = Auth::user();
+        $currentPassword = $request->input('currentPassword');
+        $newPassword = $request->input('newPassword');
+
+        // Verify the current password
+        if (!Hash::check($currentPassword, $user->password)) {
+            return response([
+                'message' => 'Current password is incorrect'
+            ], Response::HTTP_UNAUTHORIZED);
+        }
+
+        // Update the user's password
+        $user->password = Hash::make($newPassword);
+        $user->save();
+
+        return response([
+            'message' => 'Password changed successfully'
+        ]);
+    }
 }
