@@ -25,6 +25,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::resource('events', EvenementController::class);
     Route::resource('filiere', FiliereController::class);
     Route::resource('category', PdfCategorieController::class);
+
+
     Route::get('ownarchive', [PdfCategorieController::class, 'index']);
     Route::put('category/update/{category}', [PdfCategorieController::class, 'update']);
     Route::controller(PosteController::class)->group(function () {
@@ -35,6 +37,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::controller(PDFController::class)->group(function () {
         Route::put('pdf/update/{pdf}', 'update');
         Route::post('pdf/removecategory/{pdf}', 'removeCategory');
+
     });
 });
 
@@ -52,6 +55,17 @@ Route::get('fourstagiaires', [StagiaireController::class, 'randomFourStagiaires'
 
 Route::get('stagiaire/{id}', [StagiaireController::class, 'index']);
 Route::put('stagiaire/{id}', [StagiaireController::class, 'update']);
+Route::put('stagiaire/{id}/competences/{competenceId}', [StagiaireController::class, 'updateCompetences']);
+Route::post('/stagiaire/{id}/competences', [StagiaireController::class, 'addCompetence']);
+
+
+Route::prefix('stagiaires')->group(function () {
+    Route::post('{id}/experiences', [StagiaireController::class, 'addExperience']);
+    Route::put('{id}/experiences/{experienceId}', [StagiaireController::class, 'updateExperience']);
+});
+
+
+Route::post('/stagiaires/{id}/add-propos', [StagiaireController::class, 'addPropos']);
 
 
 Route::post('/stagiaires/import', [ExcelImportController::class, 'import']);

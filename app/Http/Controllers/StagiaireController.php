@@ -6,6 +6,12 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use App\Models\CV;
+use App\Models\Competence;
+use App\Models\Experience;
+
+
+
 
 
 use App\Models\Photo;
@@ -44,8 +50,17 @@ class StagiaireController extends Controller
 
         $stagiaire->load('interets', 'groupe', 'competences', 'experiences', 'formations', 'groupe.filiere');
 
+
+        $age = null;
+        if ($stagiaire->cv) {
+            $birthDate = $stagiaire->cv->dateNais;
+            $now = \Carbon\Carbon::now();
+            $age = $now->diffInYears($birthDate);
+        }
+
         return response([
-            "stagiaire" => $stagiaire
+            "stagiaire" => $stagiaire,
+            "age" => $age
         ]);
     }
 
@@ -57,42 +72,128 @@ class StagiaireController extends Controller
         $stagiaire = User::find($id);
 
         if ($stagiaire) {
-            // Update CV propos
             $cv = $stagiaire->cv;
 
             if ($cv) {
                 $cv->propos = $request->input('propos');
                 $cv->save();
+
+                return response()->json([
+                    'message' => 'CV propos updated successfully',
+                ]);
             } else {
                 return response()->json([
                     'message' => 'CV not found',
                 ]);
             }
-
-            // Update competences
-            $competences = $request->input('competences');
-
-            if ($competences && is_array($competences)) {
-                foreach ($competences as $competenceData) {
-                    $competence = $stagiaire->competences()->find($competenceData['id']);
-
-                    if ($competence) {
-                        $competence->desc = $competenceData['desc'];
-                        $competence->categorie = $competenceData['categorie'];
-                        $competence->save();
-                    }
-                }
-            }
-
-            return response()->json([
-                'message' => 'CV and competences updated successfully',
-            ]);
         } else {
             return response()->json([
                 'message' => 'Stagiaire not found',
             ]);
         }
     }
+
+    public function updateCompetences(Request $request, $id, $competenceId)
+    {
+        $stagiaire = User::find($id);
+
+        if ($stagiaire) {
+            $competence = Competence::find($competenceId);
+
+            if ($competence) {
+                $competence->categorie = $request->input('categorie');
+                $competence->desc = $request->input('desc');
+                $competence->save();
+
+                return response()->json([
+                    'message' => 'Competence updated successfully',
+                ]);
+            } else {
+                return response()->json([
+                    'message' => 'Competence not found',
+                ]);
+            }
+        } else {
+            return response()->json([
+                'message' => 'Stagiaire not found',
+            ]);
+        }
+    }
+
+    public function addCompetence(Request $request, $id)
+    {
+        $stagiaire = User::find($id);
+
+        if ($stagiaire) {
+            $competence = new Competence;
+            $competence->categorie = $request->input('categorie');
+            $competence->desc = $request->input('desc');
+            $stagiaire->competences()->save($competence);
+
+            return response()->json([
+                'message' => 'Competence added successfully',
+                'competence' => $competence
+            ]);
+        } else {
+            return response()->json([
+                'message' => 'Stagiaire not found',
+            ], 404);
+        }
+    }
+    public function addExperience(Request $request, $id)
+    {
+        $stagiaire = User::find($id);
+
+        if ($stagiaire) {
+            $experience = new Experience;
+            $experience->titre = $request->input('titre');
+            $experience->dateDeb = $request->input('dateDeb');
+            $experience->dateFin = $request->input('dateFin');
+            $experience->mission = $request->input('mission');
+            $stagiaire->experiences()->save($experience);
+
+            return response()->json([
+                'message' => 'Experience added successfully',
+                'experience' => $experience
+            ]);
+        } else {
+            return response()->json([
+                'message' => 'Stagiaire not found',
+            ], 404);
+        }
+    }
+
+    public function updateExperience(Request $request, $id, $experienceId)
+    {
+        $stagiaire = User::find($id);
+
+        if ($stagiaire) {
+            $experience = $stagiaire->experiences()->find($experienceId);
+
+            if ($experience) {
+                $experience->titre = $request->input('titre');
+                $experience->dateDeb = $request->input('dateDeb');
+                $experience->dateFin = $request->input('dateFin');
+                $experience->mission = $request->input('mission');
+                $experience->save();
+
+                return response()->json([
+                    'message' => 'Experience updated successfully',
+                ]);
+            } else {
+                return response()->json([
+                    'message' => 'Experience not found',
+                ]);
+            }
+        } else {
+            return response()->json([
+                'message' => 'Stagiaire not found',
+            ]);
+        }
+    }
+
+
+
 
 
 
@@ -130,6 +231,28 @@ class StagiaireController extends Controller
     {
         //
     }
+
+    public function addPropos(Request $request, string $id)
+    {
+        $stagiaire = User::find($id);
+
+        if ($stagiaire) {
+            $cv = new CV();
+            $cv->propos = $request->input('propos');
+            $cv->user_id = $stagiaire->id;
+            $cv->save();
+
+            return response()->json([
+                'message' => 'CV propos added successfully',
+            ]);
+        } else {
+            return response()->json([
+                'message' => 'Stagiaire not found',
+            ]);
+        }
+    }
+
+
 
     /**
      * Update the specified resource in storage.
