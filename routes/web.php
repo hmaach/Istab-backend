@@ -28,4 +28,5 @@ Route::get('/f',[\App\Http\Controllers\ReactController::class,'index'])->name('r
 Route::get('/search', [\App\Http\Controllers\SearchController::class, 'globalSearch'])->name('rechercher');
 Route::get('/a', [\App\Http\Controllers\AuthController::class, 'createUser']);
 Route::get('/import', [ExcelImportController::class, 'importView'])->name('import.view');
-Route::post('/import', [ExcelImportController::class, 'import'])->name('import');
+Route::post('/importa', [ExcelImportController::class, 'import'])->name('import');
+

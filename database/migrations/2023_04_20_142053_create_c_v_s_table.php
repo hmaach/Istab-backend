@@ -18,8 +18,12 @@ return new class extends Migration
                 ->cascadeOnDelete()
                 ->cascadeOnUpdate();
             $table->longText('propos');
+
             $table->boolean('intimite')->default(0); // Set default value to 0
             $table->date('dateNais')->nullable();
+
+
+
 
             $table->timestamps();
         });

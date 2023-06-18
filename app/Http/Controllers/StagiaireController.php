@@ -7,8 +7,10 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use App\Models\CV;
+
 use App\Models\Competence;
 use App\Models\Experience;
+
 
 
 
@@ -62,6 +64,22 @@ class StagiaireController extends Controller
             "stagiaire" => $stagiaire,
             "age" => $age
         ]);
+    }
+
+    public function show($id)
+    {
+
+        $stagiaire = User::with('cv', 'interets', 'groupe', 'competences', 'experiences', 'formations', 'groupe.filiere')
+            ->find($id);
+
+        if (!$stagiaire) {
+            return response()->json([
+                'message' => 'Stagiaire not found'
+            ], 404);
+        }
+
+        // Pass the retrieved stagiaire data to a view and return the generated CV page
+        return view('cv.show', ['stagiaire' => $stagiaire]);
     }
 
 
@@ -196,6 +214,32 @@ class StagiaireController extends Controller
 
 
 
+    public function addPropos(Request $request, $id)
+    {
+        $stagiaire = User::find($id);
+
+        if ($stagiaire) {
+            $propos = $request->input('propos');
+
+            // Create a new CV propos
+            $cv = new CV();
+            $cv->propos = $propos;
+
+            // Save the CV propos
+            $stagiaire->cv()->save($cv);
+
+            return response()->json([
+                'message' => 'CV propos added successfully',
+                'cv' => $cv
+            ]);
+        } else {
+            return response()->json([
+                'message' => 'Stagiaire not found',
+            ], 404);
+        }
+    }
+
+
 
 
 
@@ -219,10 +263,7 @@ class StagiaireController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
-    {
-        //
-    }
+
 
     /**
      * Show the form for editing the specified resource.
@@ -232,25 +273,7 @@ class StagiaireController extends Controller
         //
     }
 
-    public function addPropos(Request $request, string $id)
-    {
-        $stagiaire = User::find($id);
 
-        if ($stagiaire) {
-            $cv = new CV();
-            $cv->propos = $request->input('propos');
-            $cv->user_id = $stagiaire->id;
-            $cv->save();
-
-            return response()->json([
-                'message' => 'CV propos added successfully',
-            ]);
-        } else {
-            return response()->json([
-                'message' => 'Stagiaire not found',
-            ]);
-        }
-    }
 
 
 
