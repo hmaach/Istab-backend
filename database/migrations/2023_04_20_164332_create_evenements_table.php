@@ -17,16 +17,15 @@ return new class extends Migration
                 ->constrained()
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
-            $table->string('description');
+            $table->string('description')->nullable();
             $table->string('titre');
-            $table->string('couleur')->nullable();
+            $table->string('color')->nullable();
+            $table->string('oldColor')->nullable();
             $table->string('type')->nullable();
             $table->string('audience')->default('public');
             $table->integer('audience_id')->nullable();
-            $table->date('dateDeb');
-            $table->date('dateFin');
-            $table->time('timeDeb');
-            $table->time('timeFin');
+            $table->dateTime('dateDeb');
+            $table->dateTime('dateFin');
             $table->timestamps();
         });
     }

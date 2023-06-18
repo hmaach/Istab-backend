@@ -391,14 +391,21 @@ class PosteController extends Controller
         $imageData = [];
         $imgs = $request->file('imgs');
         $imageData = [];
+
         if (is_array($imgs)) {
             foreach ($imgs as $img) {
+
+
+
                 $imagePath = $img->store('public/imgs');
                 $imageData[] = $imagePath;
                 $photo = new Photo();
                 $photo->poste_id = $poste->id;
                 $photo->path = str_replace("public/", "", $imagePath);
                 $photo->save();
+
+
+
             }
         }
 

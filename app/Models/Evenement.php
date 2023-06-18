@@ -8,8 +8,18 @@ use Illuminate\Database\Eloquent\Model;
 class Evenement extends Model
 {
     use HasFactory;
+
     protected $searchable = [];
 
+    protected $fillable = [
+        'titre',
+        'description',
+        'color',
+        'dateDeb',
+        'dateFin',
+        'audience',
+        'audience_id'
+    ];
 
     public function notification()
     {
