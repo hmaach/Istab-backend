@@ -96,3 +96,6 @@ Route::post('/stagiaires/import', [ExcelImportController::class, 'import'])->nam
 Route::post('/search', [ExcelImportController::class, 'search'])->name('search');
 Route::get('/stagiairesExc', [ExcelImportController::class, 'index']);
 
+
+
+Route::get('/gcv/{id}', [\App\Http\Controllers\CVController::class, 'generate']);
