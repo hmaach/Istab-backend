@@ -15,7 +15,6 @@ return new class extends Migration
             $table->id();
             $table->string('titre');
             $table->string('institut');
-            $table->date('dateDeb');
             $table->date('dateFin');
             $table->foreignIdFor(\App\Models\User::class)
                 ->constrained()

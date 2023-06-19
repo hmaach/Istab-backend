@@ -70,6 +70,17 @@ Route::prefix('stagiaires')->group(function () {
     Route::put('{id}/experiences/{experienceId}', [StagiaireController::class, 'updateExperience']);
 });
 
+Route::prefix('formations')->group(function () {
+    Route::post('/{id}', [StagiaireController::class, 'addFormation']);
+    Route::put('/{id}/{formationId}', [StagiaireController::class, 'updateFormation']);
+});
+
+
+Route::prefix('interets')->group(function () {
+    Route::post('/{id}', [StagiaireController::class, 'addInteret']);
+    Route::put('/{id}/{interetId}', [StagiaireController::class, 'updateInteret']);
+});
+
 
 Route::post('/stagiaires/{id}/add-propos', [StagiaireController::class, 'addPropos']);
 

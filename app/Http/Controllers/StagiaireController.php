@@ -10,6 +10,9 @@ use App\Models\CV;
 
 use App\Models\Competence;
 use App\Models\Experience;
+use App\Models\Formation;
+use App\Models\Interet;
+
 
 
 
@@ -236,6 +239,101 @@ class StagiaireController extends Controller
             return response()->json([
                 'message' => 'Stagiaire not found',
             ], 404);
+        }
+    }
+    public function addFormation(Request $request, $id)
+    {
+        $stagiaire = User::find($id);
+
+        if ($stagiaire) {
+            $formation = new Formation;
+            $formation->titre = $request->input('titre');
+            $formation->institut = $request->input('institut');
+            $formation->dateFin = $request->input('dateFin');
+            $stagiaire->formations()->save($formation);
+
+            return response()->json([
+                'message' => 'Formation added successfully',
+                'formation' => $formation
+            ]);
+        } else {
+            return response()->json([
+                'message' => 'Stagiaire not found',
+            ], 404);
+        }
+    }
+
+    public function updateFormation(Request $request, $id, $formationId)
+    {
+        $stagiaire = User::find($id);
+
+        if ($stagiaire) {
+            $formation = $stagiaire->formations()->find($formationId);
+
+            if ($formation) {
+                $formation->titre = $request->input('titre');
+                $formation->institut = $request->input('institut');
+                $formation->dateFin = $request->input('dateFin');
+                $formation->save();
+
+                return response()->json([
+                    'message' => 'Formation updated successfully',
+                ]);
+            } else {
+                return response()->json([
+                    'message' => 'Formation not found',
+                ]);
+            }
+        } else {
+            return response()->json([
+                'message' => 'Stagiaire not found',
+            ]);
+        }
+    }
+
+    public function addInteret(Request $request, $id)
+    {
+        $stagiaire = User::find($id);
+
+        if ($stagiaire) {
+            $interet = new Interet;
+            $interet->libelle = $request->input('libelle');
+            $stagiaire->interets()->save($interet);
+
+            return response()->json([
+                'message' => 'Interet added successfully',
+                'interet' => $interet
+            ]);
+        } else {
+            return response()->json([
+                'message' => 'Stagiaire not found',
+            ], 404);
+        }
+    }
+
+    public function updateInteret(Request $request, $id, $interetId)
+    {
+        $stagiaire = User::find($id);
+
+        if ($stagiaire) {
+            $interet = $stagiaire->interets()->find($interetId);
+
+            if ($interet) {
+                $interet->libelle = $request->input('libelle');
+                $interet->save();
+
+                return response()->json([
+                    'message' => 'Interet updated successfully',
+                ]);
+            } else {
+                return response()->json([
+                    'message' => 'Interet not found',
+                ]);
+            }
+        } else {
+            return response()->json([
+                'message' => 'Stagiaire not found',
+            ]);
         }
     }
 

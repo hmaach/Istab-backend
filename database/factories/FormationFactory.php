@@ -25,7 +25,6 @@ class FormationFactory extends Factory
             },
             "titre" => fake()->text(30),
             "institut" => fake()->text(20),
-            "dateDeb" => fake()->date(),
             "dateFin" => fake()->date()
         ];
     }
