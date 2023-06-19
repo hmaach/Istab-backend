@@ -35,7 +35,7 @@ class EvenementFactory extends Factory
         return [
             'user_id' => $user_id,
             'titre' => $titre,
-            'couleur' => $couleur,
+            'color' => $couleur,
             'description' => $description,
             'type' => $type,
             'audience' => $audience,
