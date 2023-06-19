@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Filiere;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
 
 class FiliereController extends Controller
@@ -11,11 +12,22 @@ class FiliereController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index():Response
+    public function index()
     {
-        $filieres = Filiere::with('groupes')->get();
+        $user = Auth::user();
+        $filieres = [];
+
+        if ($user->role === "admin" || $user->role === "formateur") {
+            $filieres = Filiere::select(
+                "id",
+                "libelle",
+                "extention",
+                "niveau"
+            )->get();
+        }
+
         return response([
-            'filieres'=>$filieres
+            'filieres' => $filieres
         ]);
     }
 

@@ -29,6 +29,14 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::get('ownarchive', [PdfCategorieController::class, 'index']);
     Route::put('category/update/{category}', [PdfCategorieController::class, 'update']);
+
+    Route::controller(EvenementController::class)->group(function () {
+        Route::post('/events/{evenement}/cancel', 'cancelEvent');
+        Route::post('/events/{evenement}/restore-color', 'restoreEventColor');
+        Route::put('/events/{evenement}', 'update');
+        Route::delete('/events/{evenement}', 'destroy');
+    });
+
     Route::controller(PosteController::class)->group(function () {
         Route::put('poste/update', 'update');
         Route::post('/poste/{postId}/like', 'likePost');
@@ -50,10 +58,14 @@ Route::get('archive', [PdfCategorieController::class, 'index']);
 Route::resource('/pdf', PDFController::class);
 
 Route::get('/downloadpdf', [PDFController::class, 'downloadPDF']);
-Route::get('eventspublic', [EvenementController::class, 'index']);
 Route::get('/search', [SearchController::class, 'globalSearch']);
 Route::get('/edit', [PosteController::class, 'edit']);
-Route::resource('postespublic', PosteController::class);
+Route::get('eventspublic', [EvenementController::class, 'index']);
+Route::get('showevent/{evenement}', [EvenementController::class, 'show']);
+Route::get('showevents', [EvenementController::class, 'showEvents']);
+Route::get('monthevents', [EvenementController::class, 'thisMonthEvents']);
+Route::get('dayevents', [EvenementController::class, 'getByDay']);
+Route::get('postespublic', [PosteController::class, 'index']);
 Route::resource('notifs', NotificationController::class);
 Route::get('fourstagiaires', [StagiaireController::class, 'randomFourStagiaires']);
 

@@ -12,7 +12,7 @@ return new class extends Migration
             $table->id();
             $table->string('libelle')->nullable();
             $table->string('type');
-            $table->string('audience');
+            $table->string('audience')->default("public");
             $table->string('pdf_path')->nullable();
             $table->integer('audience_id')->nullable();
             $table->timestamps();
