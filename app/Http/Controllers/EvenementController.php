@@ -95,9 +95,7 @@ class EvenementController extends Controller
         $event->titre = $request->titre;
         $event->description = $request->description;
         $event->dateDeb = $request->dateDeb;
-        $event->timeDeb = $request->timeDeb;
         $event->dateFin = $request->dateFin;
-        $event->timeFin = $request->timeFin;
         $event->audience = $request->audience;
         $event->color = $request->color;
         $event->audience_id = $request->audience_id;

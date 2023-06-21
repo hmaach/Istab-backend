@@ -19,7 +19,7 @@ return new class extends Migration
                 ->cascadeOnUpdate();
             $table->longText('propos');
 
-            $table->boolean('intimite')->default(0); // Set default value to 0
+            $table->boolean('intimite')->default(0);
             $table->date('dateNais')->nullable();
 
 

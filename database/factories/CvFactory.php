@@ -19,12 +19,21 @@ class CvFactory extends Factory
     {
         return [
             "user_id" => function () {
-                return User::query()
-                    ->where('role','=','stagiaire')
-                    ->get()->random();
+                $stagiairesWithoutCV = User::query()
+                    ->where('role', '=', 'stagiaire')
+                    ->whereDoesntHave('cv')
+                    ->get();
+
+                if ($stagiairesWithoutCV->isEmpty()) {
+                    return null;
+                }
+
+                return $stagiairesWithoutCV->random();
             },
             "propos" => fake()->text(200),
-            "intimite"=> fake()->boolean,
+            "intimite" => fake()->boolean,
+            "dateNais" => fake()->date()
         ];
     }
+
 }

@@ -97,7 +97,7 @@ class StagiaireController extends Controller
 
             if ($cv) {
                 $cv->propos = $request->input('propos');
-                $cv->save();
+                $cv->update();
 
                 return response()->json([
                     'message' => 'CV propos updated successfully',

@@ -94,7 +94,6 @@ Route::prefix('interets')->group(function () {
 });
 
 
-Route::post('/stagiaires/{id}/add-propos', [StagiaireController::class, 'addPropos']);
 
 Route::get('cv/{id}', [StagiaireController::class, 'show']);
 Route::post('/stagiaires/{id}/add-propos',[StagiaireController::class, 'addPropos'] );
