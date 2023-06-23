@@ -27,11 +27,16 @@ class StagiaireController extends Controller
     public function randomFourStagiaires()
     {
 
+//        $stagiaires = User::with("groupe.filiere")
+//            ->whereNotNull('groupe_id')
+//            ->inRandomOrder()
+//            ->limit(4)
+//            ->get();
+
         $stagiaires = User::with("groupe.filiere")
-            ->whereNotNull('groupe_id')
-            ->inRandomOrder()
-            ->limit(4)
+            ->whereIn('id', [1, 2, 3, 4]) // Replace [1, 2, 3, 4] with the actual IDs you want to fetch
             ->get();
+
 
         return response([
             "stagiaires" => $stagiaires

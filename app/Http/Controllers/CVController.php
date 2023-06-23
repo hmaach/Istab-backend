@@ -28,7 +28,7 @@ class CVController extends Controller
             if ($stagiaire->cv) {
                 $birthDate = $stagiaire->cv->dateNais;
                 $now = \Carbon\Carbon::now();
-                $age = $now->diffInYears($birthDate);
+                $age = $now->diffInYears($birthDate) ;
                 $stagiaire->age = $age;
                 $nom = $stagiaire->nom;
                 $email = $stagiaire->email;
